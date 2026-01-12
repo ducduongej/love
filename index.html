@@ -2,11 +2,15 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Love 💖</title>
+<title>Love Bích Diệu 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- iOS full screen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
- 
+
 <style>
 html, body {
     margin: 0;
@@ -28,10 +32,13 @@ body::before {
     z-index: 0;
 }
 
+/* 🍎 SAFE AREA iOS */
 .box {
     position: relative;
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ❤️ CANVAS TIM */
@@ -42,7 +49,7 @@ canvas {
     z-index: 1;
 }
 
-/* 🖼️ ẢNH NGƯỜI YÊU */
+/* 🖼️ ẢNH */
 .love-img {
     position: absolute;
     width: 120px;
@@ -50,7 +57,7 @@ canvas {
     border-radius: 50%;
     object-fit: cover;
     left: 50%;
-    top: 42%;
+    top: 40%;
     transform: translate(-50%, -50%);
     z-index: 5;
     box-shadow: 0 0 35px #ff4da6, 0 0 70px #ff1a8c;
@@ -60,7 +67,7 @@ canvas {
 /* 💓 TEXT */
 .text-wrap {
     position: absolute;
-    top: 70%;
+    top: 74%;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -90,7 +97,7 @@ canvas {
 /* 🎵 */
 .music-btn {
     position: fixed;
-    bottom: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
     right: 20px;
     z-index: 10;
     background: rgba(255,92,164,0.85);
@@ -130,7 +137,7 @@ canvas {
     .heart-text { font-size: 36px; }
     .message { font-size: 15px; }
     .counter { font-size: 14px; }
-    .text-wrap { top: 72%; }
+    canvas { transform: scale(0.95); }
 }
 </style>
 </head>
@@ -302,4 +309,3 @@ resize();render();
 
 </body>
 </html>
-
