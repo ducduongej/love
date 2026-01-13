@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Bích Diệu 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
@@ -32,6 +32,7 @@ canvas{
   z-index:0;
 }
 
+/* TEXT */
 .center{
   position:relative;
   z-index:2;
@@ -39,48 +40,33 @@ canvas{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-end;
+  padding-bottom:10vh;
   text-align:center;
-  padding-top:6vh;
-}
-
-.avatar{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:url("love.jpg") center/cover no-repeat;
-  box-shadow:0 0 30px #ff5ca4;
-  margin-bottom:12px;
 }
 
 .name{
   font-family:'Great Vibes',cursive;
-  font-size:48px;
+  font-size:46px;
   color:#ff69b4;
-  text-shadow:0 0 20px #ff69b4;
-  margin:8px 0 10px;
+  text-shadow:0 0 18px #ff69b4;
+  margin-bottom:12px;
 }
 
 .row{
   display:flex;
-  gap:36px;
-  justify-content:center;
-  align-items:flex-start;
+  gap:40px;
   flex-wrap:wrap;
+  justify-content:center;
 }
 
 .block{
   color:#ffd1e8;
   font-size:16px;
   line-height:1.6;
-  min-width:150px;
 }
 
-.time{
-  margin-top:6px;
-  font-size:15px;
-}
-
+/* MUSIC */
 .music{
   position:fixed;
   right:20px;
@@ -103,11 +89,9 @@ canvas{
 <body>
 
 <div class="bg"></div>
-<canvas id="pinkboard"></canvas>
+<canvas id="canvas"></canvas>
 
 <div class="center">
-  <div class="avatar"></div>
-
   <div class="name">Bích Diệu</div>
 
   <div class="row">
@@ -118,8 +102,8 @@ canvas{
     </div>
 
     <div class="block">
-      Bên nhau 💍
-      <div class="time" id="timeText"></div>
+      Bên nhau 💍<br>
+      <span id="time"></span>
     </div>
   </div>
 </div>
@@ -128,50 +112,44 @@ canvas{
 <audio id="bgm" src="music.mp3" loop></audio>
 
 <script>
-/* ================== TIME CALC (CHÍNH XÁC) ================== */
-const startDate = new Date(2025,6,13,0,0,0);
-
-function updateTime(){
-  const now = new Date();
-  let y=0,m=0;
-
-  let temp = new Date(startDate);
-  while(true){
-    const next = new Date(temp);
-    next.setFullYear(next.getFullYear()+1);
-    if(next<=now){ y++; temp=next; } else break;
-  }
-
-  while(true){
-    const next = new Date(temp);
-    next.setMonth(next.getMonth()+1);
-    if(next<=now){ m++; temp=next; } else break;
-  }
-
-  let diff = Math.floor((now-temp)/1000);
-  const d = Math.floor(diff/86400); diff%=86400;
-  const h = Math.floor(diff/3600); diff%=3600;
-  const mi = Math.floor(diff/60);
-  const s = diff%60;
-
-  let txt="";
-  if(y>0) txt+=`${y} năm `;
-  if(m>0) txt+=`${m} tháng `;
-  txt+=`${d} ngày<br>${h} giờ ${mi} phút ${s} giây 💖`;
-
-  document.getElementById("timeText").innerHTML=txt;
-}
-setInterval(updateTime,1000);
-updateTime();
-
-/* ================== MUSIC ================== */
+/* ===== MUSIC ===== */
 function toggleMusic(){
   const m=document.getElementById("bgm");
   m.paused?m.play():m.pause();
 }
 
-/* ================== HEART PARTICLES (CŨ) ================== */
-const canvas=document.getElementById("pinkboard");
+/* ===== TIME (CHÍNH XÁC) ===== */
+const start = new Date(2025,6,13,0,0,0);
+function updateTime(){
+  const now=new Date();
+  let temp=new Date(start);
+  let y=0,m=0;
+
+  while(new Date(temp.getFullYear()+1,temp.getMonth(),temp.getDate())<=now){
+    temp.setFullYear(temp.getFullYear()+1); y++;
+  }
+  while(new Date(temp.getFullYear(),temp.getMonth()+1,temp.getDate())<=now){
+    temp.setMonth(temp.getMonth()+1); m++;
+  }
+
+  let diff=Math.floor((now-temp)/1000);
+  const d=Math.floor(diff/86400); diff%=86400;
+  const h=Math.floor(diff/3600); diff%=3600;
+  const mi=Math.floor(diff/60);
+  const s=diff%60;
+
+  let t="";
+  if(y>0) t+=`${y} năm `;
+  if(m>0) t+=`${m} tháng `;
+  t+=`${d} ngày<br>${h} giờ ${mi} phút ${s} giây 💖`;
+
+  document.getElementById("time").innerHTML=t;
+}
+setInterval(updateTime,1000);
+updateTime();
+
+/* ===== HEART PARTICLE ===== */
+const canvas=document.getElementById("canvas");
 const ctx=canvas.getContext("2d");
 resize();
 window.onresize=resize;
@@ -186,68 +164,60 @@ function heart(t){
   return {
     x:16*Math.pow(Math.sin(t),3),
     y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
-  }
+  };
 }
 
-function spawn(){
-  for(let i=0;i<8;i++){
+function spawnHeart(){
+  for(let i=0;i<10;i++){
     const t=Math.random()*Math.PI*2;
     const p=heart(t);
     particles.push({
-      x:canvas.width/2+p.x*15,
-      y:canvas.height/2+p.y*15,
-      vx:p.x*0.8,
-      vy:p.y*0.8,
-      life:80
+      x:canvas.width/2+p.x*18,
+      y:canvas.height/2+p.y*18,
+      vx:p.x*0.4,
+      vy:p.y*0.4,
+      life:120
     });
   }
 }
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  spawn();
+  spawnHeart();
+
   for(let i=particles.length-1;i>=0;i--){
     const p=particles[i];
     p.x+=p.vx;
     p.y+=p.vy;
     p.life--;
-    ctx.fillStyle=`rgba(255,92,164,${p.life/80})`;
+
+    ctx.fillStyle=`rgba(255,105,180,${p.life/120})`;
     ctx.beginPath();
-    ctx.arc(p.x,p.y,2.2,0,Math.PI*2);
+    ctx.arc(p.x,p.y,2.4,0,Math.PI*2);
     ctx.fill();
-    if(p.life<=0)particles.splice(i,1);
+
+    if(p.life<=0) particles.splice(i,1);
   }
   requestAnimationFrame(draw);
 }
 draw();
 
-/* ================== CLICK → NỔ MẠNH ================== */
+/* ===== CLICK → NỔ MẠNH ===== */
 canvas.addEventListener("click",e=>{
   const r=canvas.getBoundingClientRect();
   const x=e.clientX-r.left;
   const y=e.clientY-r.top;
 
-  for(let i=0;i<420;i++){
+  for(let i=0;i<500;i++){
     const a=Math.random()*Math.PI*2;
-    const s=220+Math.random()*260;
-    particles.push({x,y,vx:Math.cos(a)*s/20,vy:Math.sin(a)*s/20,life:100});
+    const s=300+Math.random()*300;
+    particles.push({
+      x,y,
+      vx:Math.cos(a)*s/25,
+      vy:Math.sin(a)*s/25,
+      life:120
+    });
   }
-
-  setTimeout(()=>{
-    for(let i=0;i<260;i++){
-      const a=Math.random()*Math.PI*2;
-      const s=120+Math.random()*180;
-      particles.push({x,y,vx:Math.cos(a)*s/20,vy:Math.sin(a)*s/20,life:90});
-    }
-  },120);
-
-  setTimeout(()=>{
-    for(let i=0;i<160;i++){
-      const a=-Math.PI/2+(Math.random()-0.5);
-      const s=200+Math.random()*200;
-      particles.push({x,y,vx:Math.cos(a)*s/20,vy:Math.sin(a)*s/20,life:80});
-    }
-  },220);
 });
 </script>
 
