@@ -152,12 +152,13 @@ canvas{
 </audio>
 
 <script>
-/* 📱 Fix vh iOS */
-function fixIOSHeight(){
-    document.documentElement.style.setProperty('--vh',window.innerHeight*0.01+'px');
+.box{
+    position:relative;
+    width:100vw;
+    height:100vh; /* ← dùng thẳng */
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
 }
-fixIOSHeight();
-window.addEventListener('resize',fixIOSHeight);
 
 /* 💍 TÍNH THỜI GIAN CHÍNH XÁC */
 const startDate=new Date(2025,6,13,0,0,0);
@@ -343,7 +344,7 @@ lastBeat=now;
 for(let i=0;i<60;i++){
 let a=Math.random()*Math.PI*2;
 let s=80+Math.random()*80;
-particles.add(canvas.width/2,canvas.height/2-80,Math.cos(a)*s,Math.sin(a)*s);
+particles.add(canvas.width/2,canvas.height * 0.42,Math.cos(a)*s,Math.sin(a)*s);
 }}
 requestAnimationFrame(beatExplode);
 }
@@ -351,3 +352,4 @@ requestAnimationFrame(beatExplode);
 
 </body>
 </html>
+
