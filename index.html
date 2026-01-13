@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Bích Diệu 💖</title>
+<title>Love Bích Diệu 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,124 +11,122 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;1,500&display=swap" rel="stylesheet">
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    background: black;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    background:black;
+    overflow:hidden;
 }
 
-/* 🌌 BACKGROUND */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+/* 🌌 Background */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
-        url("background.jpg") center / cover no-repeat;
-    z-index: 0;
+        linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.85)),
+        url("background.jpg") center/cover no-repeat;
+    z-index:0;
 }
 
-.box {
-    position: relative;
-    width: 100vw;
-    height: calc(var(--vh, 1vh) * 100);
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+/* 📱 Safe area */
+.box{
+    position:relative;
+    width:100vw;
+    height:calc(var(--vh,1vh)*100);
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
 }
 
-/* ❤️ CANVAS */
-canvas {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
+/* ❤️ Canvas */
+canvas{
+    position:absolute;
+    inset:0;
+    z-index:1;
 }
 
-/* 🖼️ AVATAR */
-.love-img {
-    position: absolute;
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    left: 50%;
-    top: 38%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-    box-shadow: 0 0 30px #ff4da6, 0 0 60px #ff1a8c;
-    animation: heartbeat 1.3s infinite;
+/* 🖼️ Avatar */
+.love-img{
+    position:absolute;
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    left:50%;
+    top:38%;
+    transform:translate(-50%,-50%);
+    z-index:5;
+    box-shadow:0 0 35px #ff4da6,0 0 70px #ff1a8c;
+    animation:heartbeat 1.3s infinite;
 }
 
-/* 💓 NAME */
-.name {
-    position: absolute;
-    top: 56%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Great Vibes', cursive;
-    font-size: 46px;
-    color: #ff5ca8;
-    z-index: 6;
-    text-shadow: 0 0 20px #ff5ca8;
+/* 💓 Name */
+.name{
+    position:absolute;
+    top:59%;
+    left:50%;
+    transform:translateX(-50%);
+    font-family:'Great Vibes',cursive;
+    font-size:46px;
+    color:#ff5ca8;
+    z-index:6;
+    text-shadow:0 0 20px #ff5ca8;
 }
 
-/* 💬 INFO */
-.info-wrap {
-    position: absolute;
-    top: 64%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 22px;
-    z-index: 6;
-    color: #ffd1e8;
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    text-align: center;
+/* 💬 Info song song */
+.info-wrap{
+    position:absolute;
+    top:69%;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:22px;
+    z-index:6;
+    font-family:'Playfair Display',serif;
+    font-size:15px;
+    color:#ffd1e8;
+    text-align:center;
 }
 
-.info-box {
-    min-width: 140px;
-    line-height: 1.45;
+.info-box{
+    min-width:140px;
+    line-height:1.45;
 }
 
-/* 🎵 */
-.music-btn {
-    position: fixed;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    right: 20px;
-    z-index: 10;
-    background: rgba(255,92,164,0.85);
-    border: none;
-    border-radius: 50%;
-    padding: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 0 20px #ff4da6;
+/* 🎵 Button */
+.music-btn{
+    position:fixed;
+    bottom:calc(20px + env(safe-area-inset-bottom));
+    right:20px;
+    z-index:10;
+    background:rgba(255,92,164,.85);
+    border:none;
+    border-radius:50%;
+    padding:12px;
+    font-size:20px;
+    box-shadow:0 0 20px #ff4da6;
 }
 
-/* 💓 ANIMATION */
-@keyframes heartbeat {
-    0% { transform: translate(-50%, -50%) scale(1); }
-    30% { transform: translate(-50%, -50%) scale(0.85); }
-    60% { transform: translate(-50%, -50%) scale(1.15); }
-    100% { transform: translate(-50%, -50%) scale(1); }
+/* 💓 Anim */
+@keyframes heartbeat{
+    0%{transform:translate(-50%,-50%) scale(1);}
+    30%{transform:translate(-50%,-50%) scale(.85);}
+    60%{transform:translate(-50%,-50%) scale(1.15);}
+    100%{transform:translate(-50%,-50%) scale(1);}
 }
 
-/* 📱 iPHONE */
-@media (max-width: 430px) {
-    .love-img { width: 90px; height: 90px; }
-    .name { font-size: 38px; }
-    .info-wrap { font-size: 14px; gap: 16px; top: 66%; }
+/* 📱 iPhone */
+@media(max-width:430px){
+    .love-img{width:90px;height:90px;}
+    .name{font-size:38px;}
+    .info-wrap{top:71%;font-size:14px;gap:16px;}
 }
 </style>
 </head>
 
 <body>
-
 <div class="box">
     <canvas id="pinkboard"></canvas>
 
@@ -143,9 +141,7 @@ canvas {
             is for you 💕
         </div>
 
-        <div class="info-box" id="counter">
-            Bên nhau 💍
-        </div>
+        <div class="info-box" id="counter">Bên nhau 💍</div>
     </div>
 
     <button class="music-btn" onclick="toggleMusic()">🎵</button>
@@ -156,86 +152,91 @@ canvas {
 </audio>
 
 <script>
-/* 📱 FIX iOS HEIGHT */
-function fixIOSHeight() {
-  document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+/* 📱 Fix vh iOS */
+function fixIOSHeight(){
+    document.documentElement.style.setProperty('--vh',window.innerHeight*0.01+'px');
 }
 fixIOSHeight();
-window.addEventListener('resize', fixIOSHeight);
+window.addEventListener('resize',fixIOSHeight);
 
-/* 💍 ĐẾM THỜI GIAN CHÍNH XÁC */
-const startDate = new Date(2025, 6, 13, 0, 0, 0);
-const counter = document.getElementById("counter");
+/* 💍 TÍNH THỜI GIAN CHÍNH XÁC */
+const startDate=new Date(2025,6,13,0,0,0);
+const counter=document.getElementById("counter");
 
-function diffDate(from, to) {
-    let years = to.getFullYear() - from.getFullYear();
-    let months = to.getMonth() - from.getMonth();
-    let days = to.getDate() - from.getDate();
+function diffDate(from,to){
+    let y=to.getFullYear()-from.getFullYear();
+    let m=to.getMonth()-from.getMonth();
+    let d=to.getDate()-from.getDate();
 
-    if (days < 0) {
-        months--;
-        const prevMonth = new Date(to.getFullYear(), to.getMonth(), 0);
-        days += prevMonth.getDate();
+    if(d<0){
+        m--;
+        d+=new Date(to.getFullYear(),to.getMonth(),0).getDate();
     }
+    if(m<0){y--;m+=12;}
 
-    if (months < 0) {
-        years--;
-        months += 12;
-    }
+    let base=new Date(from.getFullYear()+y,from.getMonth()+m,from.getDate());
+    let ms=to-base;
+    let h=Math.floor(ms/3600000);
+    let min=Math.floor(ms%3600000/60000);
+    let s=Math.floor(ms%60000/1000);
 
-    const anchor = new Date(
-        from.getFullYear() + years,
-        from.getMonth() + months,
-        from.getDate()
-    );
-
-    let diffMs = to - anchor;
-    let hours = Math.floor(diffMs / 3600000);
-    let minutes = Math.floor((diffMs % 3600000) / 60000);
-    let seconds = Math.floor((diffMs % 60000) / 1000);
-
-    return { years, months, days, hours, minutes, seconds };
+    return{y,m,d,h,min,s};
 }
 
-function updateCounter() {
-    const now = new Date();
-    const t = diffDate(startDate, now);
+function updateCounter(){
+    const t=diffDate(startDate,new Date());
+    let line="";
+    if(t.y>0) line+=`${t.y} năm `;
+    if(t.m>0||t.y>0) line+=`${t.m} tháng `;
+    line+=`${t.d} ngày`;
 
-    counter.innerHTML = `
+    counter.innerHTML=`
         Bên nhau 💍<br>
-        ${t.years} năm ${t.months} tháng<br>
-        ${t.days} ngày ${t.hours} giờ<br>
-        ${t.minutes} phút ${t.seconds} giây 💖
+        ${line}<br>
+        ${t.h} giờ ${t.min} phút ${t.s} giây 💖
     `;
 }
-
-setInterval(updateCounter, 1000);
+setInterval(updateCounter,1000);
 updateCounter();
 
-/* 🎵 MUSIC */
-const music = document.getElementById("bg-music");
-let isPlaying = false;
-function toggleMusic() {
-    isPlaying ? music.pause() : music.play();
-    isPlaying = !isPlaying;
-}
-document.body.addEventListener("click", () => {
-    if (!isPlaying) {
+/* 🎵 Music + Beat */
+const music=document.getElementById("bg-music");
+let isPlaying=false;
+
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+const audioCtx=new AudioCtx();
+const source=audioCtx.createMediaElementSource(music);
+const analyser=audioCtx.createAnalyser();
+analyser.fftSize=64;
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+const dataArray=new Uint8Array(analyser.frequencyBinCount);
+let lastBeat=0;
+
+function toggleMusic(){
+    if(!isPlaying){
         music.play();
-        isPlaying = true;
-    }
-}, { once: true });
+        audioCtx.resume();
+        beatExplode();
+    }else music.pause();
+    isPlaying=!isPlaying;
+}
 </script>
 
-<!-- ❤️ HEART PARTICLE + CLICK EXPLOSION -->
 <script>
-var settings={particles:{
-length: window.innerWidth < 500 ? 1200 : 2000,
-duration:2,velocity:100,effect:-1.3,size:13}};
+/* ❤️ HEART PARTICLE */
+var settings={particles:{length:window.innerWidth<500?1200:2000,duration:2,velocity:100,effect:-1.3,size:13}};
+(function(){var b=0;var c=["ms","moz","webkit","o"];
+for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){
+window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];
+window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]}
+if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h){
+var d=new Date().getTime();var f=Math.max(0,16-(d-b));
+var g=setTimeout(function(){h(d+f)},f);b=d+f;return g}}}());
 
 function Point(x,y){this.x=x||0;this.y=y||0;}
 Point.prototype.clone=function(){return new Point(this.x,this.y)};
-Point.prototype.length=function(l){if(l===undefined)return Math.sqrt(this.x*this.x+this.y*this.y);
+Point.prototype.length=function(l){if(!l)return Math.sqrt(this.x*this.x+this.y*this.y);
 this.normalize();this.x*=l;this.y*=l;return this};
 Point.prototype.normalize=function(){var l=this.length();this.x/=l;this.y/=l;return this};
 
@@ -259,14 +260,11 @@ ctx.drawImage(img,this.position.x-s/2,this.position.y-s/2,s,s);}
 function ParticlePool(l){
 this.particles=new Array(l);
 for(var i=0;i<l;i++)this.particles[i]=new Particle();
-this.firstActive=0;this.firstFree=0;this.duration=settings.particles.duration;
-}
+this.firstActive=0;this.firstFree=0;this.duration=settings.particles.duration;}
 ParticlePool.prototype.add=function(x,y,dx,dy){
 this.particles[this.firstFree].initialize(x,y,dx,dy);
 this.firstFree=(this.firstFree+1)%this.particles.length;
-if(this.firstActive===this.firstFree)
-this.firstActive=(this.firstActive+1)%this.particles.length;
-}
+if(this.firstActive===this.firstFree)this.firstActive=(this.firstActive+1)%this.particles.length;}
 ParticlePool.prototype.update=function(dt){
 var i;
 if(this.firstActive<this.firstFree){
@@ -275,17 +273,15 @@ else{
 for(i=this.firstActive;i<this.particles.length;i++)this.particles[i].update(dt);
 for(i=0;i<this.firstFree;i++)this.particles[i].update(dt);}
 while(this.particles[this.firstActive].age>=this.duration&&this.firstActive!==this.firstFree)
-this.firstActive=(this.firstActive+1)%this.particles.length;
-}
+this.firstActive=(this.firstActive+1)%this.particles.length;}
 ParticlePool.prototype.draw=function(ctx,img){
 if(this.firstActive<this.firstFree){
 for(var i=this.firstActive;i<this.firstFree;i++)this.particles[i].draw(ctx,img);}
 else{
 for(i=this.firstActive;i<this.particles.length;i++)this.particles[i].draw(ctx,img);
-for(i=0;i<this.firstFree;i++)this.particles[i].draw(ctx,img);}
-};
+for(i=0;i<this.firstFree;i++)this.particles[i].draw(ctx,img);}};
 
-(function(canvas){
+var canvas=document.getElementById("pinkboard");
 var ctx=canvas.getContext("2d");
 var particles=new ParticlePool(settings.particles.length);
 var rate=settings.particles.length/settings.particles.duration;
@@ -294,56 +290,63 @@ var time;
 function pointOnHeart(t){
 return new Point(
 160*Math.pow(Math.sin(t),3),
-130*Math.cos(t)-50*Math.cos(2*t)-20*Math.cos(3*t)-10*Math.cos(4*t)+25);
-}
+130*Math.cos(t)-50*Math.cos(2*t)-20*Math.cos(3*t)-10*Math.cos(4*t)+25);}
 
 var image=(function(){
-var c=document.createElement("canvas");
-var x=c.getContext("2d");
-c.width=settings.particles.size;
-c.height=settings.particles.size;
-x.fillStyle="#ff4da6";
-x.beginPath();
+var c=document.createElement("canvas"),x=c.getContext("2d");
+c.width=settings.particles.size;c.height=settings.particles.size;
+x.fillStyle="#ff4da6";x.beginPath();
 var t=-Math.PI,p=pointOnHeart(t);
 x.moveTo(c.width/2+p.x/350*c.width,c.height/2-p.y/350*c.height);
-while(t<Math.PI){
-t+=0.01;p=pointOnHeart(t);
+while(t<Math.PI){t+=0.01;p=pointOnHeart(t);
 x.lineTo(c.width/2+p.x/350*c.width,c.height/2-p.y/350*c.height);}
 x.closePath();x.fill();
-var img=new Image();img.src=c.toDataURL();return img;
-})();
+var img=new Image();img.src=c.toDataURL();return img;})();
 
 function render(){
 requestAnimationFrame(render);
-var newTime=Date.now()/1000;
-var dt=newTime-(time||newTime);time=newTime;
+var now=Date.now()/1000;
+var dt=now-(time||now);time=now;
 ctx.clearRect(0,0,canvas.width,canvas.height);
+
 for(var i=0;i<rate*dt;i++){
 var pos=pointOnHeart(Math.PI-2*Math.PI*Math.random());
 var dir=pos.clone().length(settings.particles.velocity);
 particles.add(canvas.width/2+pos.x,canvas.height/2-pos.y-80,dir.x,-dir.y);
 }
-particles.update(dt);particles.draw(ctx,image);
+particles.update(dt);
+particles.draw(ctx,image);
 }
 
-canvas.addEventListener("click",function(e){
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+window.addEventListener("resize",resize);
+resize();
+render();
+
+/* 🎆 CLICK NỔ MẠNH */
+canvas.addEventListener("click",e=>{
 const r=canvas.getBoundingClientRect();
 const x=e.clientX-r.left;
 const y=e.clientY-r.top;
-for(let i=0;i<200;i++){
+for(let i=0;i<180;i++){
 const a=Math.random()*Math.PI*2;
-const s=150+Math.random()*150;
+const s=120+Math.random()*120;
 particles.add(x,y,Math.cos(a)*s,Math.sin(a)*s);
+}});
+/* 🎵 BEAT NỔ */
+function beatExplode(){
+analyser.getByteFrequencyData(dataArray);
+let bass=dataArray[1];
+let now=Date.now();
+if(bass>180&&now-lastBeat>300){
+lastBeat=now;
+for(let i=0;i<60;i++){
+let a=Math.random()*Math.PI*2;
+let s=80+Math.random()*80;
+particles.add(canvas.width/2,canvas.height/2-80,Math.cos(a)*s,Math.sin(a)*s);
+}}
+requestAnimationFrame(beatExplode);
 }
-});
-
-function resize(){
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-}
-window.addEventListener("resize",resize);
-resize();render();
-})(document.getElementById("pinkboard"));
 </script>
 
 </body>
