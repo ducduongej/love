@@ -75,7 +75,7 @@ canvas{
     text-shadow:0 0 20px #ff5ca8;
 }
 
-/* 💬 Info song song */
+/* 💬 Info */
 .info-wrap{
     position:absolute;
     top:72%;
@@ -117,7 +117,7 @@ canvas{
     100%{transform:translate(-50%,-50%) scale(1);}
 }
 
-/* 📱 iPhone */
+/* 📱 Mobile */
 @media(max-width:430px){
     .love-img{width:90px;height:90px;top:36%;}
     .name{top:56%;font-size:38px;}
@@ -141,7 +141,7 @@ canvas{
             is for you 💕
         </div>
 
-        <div class="info-box" id="counter">Bên nhau 💍</div>
+        <div class="info-box" id="counter"></div>
     </div>
 
     <button class="music-btn" onclick="toggleMusic()">🎵</button>
@@ -152,54 +152,56 @@ canvas{
 </audio>
 
 <script>
-/* 📱 Fix vh iOS */
+/* 📱 Fix iOS height */
 function fixIOSHeight(){
     document.documentElement.style.setProperty('--vh',window.innerHeight*0.01+'px');
 }
 fixIOSHeight();
 window.addEventListener('resize',fixIOSHeight);
 
-/* 💍 TÍNH THỜI GIAN CHÍNH XÁC */
-const startDate=new Date(2025,6,13,0,0,0);
-const counter=document.getElementById("counter");
-
-function diffDate(from,to){
-    let y=to.getFullYear()-from.getFullYear();
-    let m=to.getMonth()-from.getMonth();
-    let d=to.getDate()-from.getDate();
-
-    if(d<0){
-        m--;
-        d+=new Date(to.getFullYear(),to.getMonth(),0).getDate();
-    }
-    if(m<0){y--;m+=12;}
-
-    let base=new Date(from.getFullYear()+y,from.getMonth()+m,from.getDate());
-    let ms=to-base;
-    let h=Math.floor(ms/3600000);
-    let min=Math.floor(ms%3600000/60000);
-    let s=Math.floor(ms%60000/1000);
-
-    return{y,m,d,h,min,s};
-}
+/* 💍 ĐẾM THỜI GIAN CHUẨN – GIỜ RESET 0–23 */
+const startDate = new Date(2025, 6, 13, 0, 0, 0);
+const counter = document.getElementById("counter");
 
 function updateCounter(){
-    const t=diffDate(startDate,new Date());
-    let line="";
-    if(t.y>0) line+=`${t.y} năm `;
-    if(t.m>0||t.y>0) line+=`${t.m} tháng `;
-    line+=`${t.d} ngày`;
+    const now = new Date();
 
-    counter.innerHTML=`
+    let y = now.getFullYear() - startDate.getFullYear();
+    let m = now.getMonth() - startDate.getMonth();
+    let d = now.getDate() - startDate.getDate();
+
+    if (d < 0){
+        m--;
+        d += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    }
+    if (m < 0){
+        y--;
+        m += 12;
+    }
+
+    const diffMs = now - startDate;
+    const totalSeconds = Math.floor(diffMs / 1000);
+
+    const s = totalSeconds % 60;
+    const min = Math.floor(totalSeconds / 60) % 60;
+    const h = Math.floor(totalSeconds / 3600) % 24;
+
+    let line = "";
+    if (y > 0) line += `${y} năm `;
+    if (m > 0 || y > 0) line += `${m} tháng `;
+    line += `${d} ngày`;
+
+    counter.innerHTML = `
         Bên nhau 💍<br>
         ${line}<br>
-        ${t.h} giờ ${t.min} phút ${t.s} giây 💖
+        ${h} giờ ${min} phút ${s} giây 💖
     `;
 }
+
 setInterval(updateCounter,1000);
 updateCounter();
 
-/* 🎵 Music + Beat */
+/* 🎵 Music */
 const music=document.getElementById("bg-music");
 let isPlaying=false;
 
@@ -218,13 +220,15 @@ function toggleMusic(){
         music.play();
         audioCtx.resume();
         beatExplode();
-    }else music.pause();
+    }else{
+        music.pause();
+    }
     isPlaying=!isPlaying;
 }
 </script>
 
 <script>
-/* ❤️ HEART PARTICLE */
+/* ❤️ HEART PARTICLE (giữ nguyên) */
 var settings={particles:{length:window.innerWidth<500?1200:2000,duration:2,velocity:100,effect:-1.3,size:13}};
 (function(){var b=0;var c=["ms","moz","webkit","o"];
 for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){
@@ -323,7 +327,7 @@ window.addEventListener("resize",resize);
 resize();
 render();
 
-/* 🎆 CLICK NỔ MẠNH */
+/* 🎆 CLICK NỔ */
 canvas.addEventListener("click",e=>{
 const r=canvas.getBoundingClientRect();
 const x=e.clientX-r.left;
@@ -333,6 +337,7 @@ const a=Math.random()*Math.PI*2;
 const s=120+Math.random()*120;
 particles.add(x,y,Math.cos(a)*s,Math.sin(a)*s);
 }});
+
 /* 🎵 BEAT NỔ */
 function beatExplode(){
 analyser.getByteFrequencyData(dataArray);
