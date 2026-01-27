@@ -5,28 +5,21 @@
 <title>Bích Diệu 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- 🍎 iOS -->
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bích Diệu 💖">
 
-<!-- 🤖 Android -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff5ca8">
-
 <link rel="icon" type="image/png" href="favicon.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
 
 <style>
 html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    background:black;
-    overflow:hidden;
+    margin:0;padding:0;width:100%;height:100%;
+    background:black;overflow:hidden;
 }
 
 /* 🌌 Background mặc định */
@@ -65,20 +58,14 @@ body.celebrate-1000::before{
     padding-bottom:env(safe-area-inset-bottom);
 }
 
-canvas{
-    position:absolute;
-    inset:0;
-    z-index:1;
-}
+canvas{position:absolute;inset:0;z-index:1;}
 
 .love-img{
     position:absolute;
-    width:110px;
-    height:110px;
+    width:110px;height:110px;
     border-radius:50%;
     object-fit:cover;
-    left:50%;
-    top:38%;
+    left:50%;top:38%;
     transform:translate(-50%,-50%);
     z-index:5;
     box-shadow:0 0 35px #ff4da6,0 0 70px #ff1a8c;
@@ -87,8 +74,7 @@ canvas{
 
 .name{
     position:absolute;
-    top:65%;
-    left:50%;
+    top:65%;left:50%;
     transform:translateX(-50%);
     font-family:'Great Vibes',cursive;
     font-size:46px;
@@ -98,8 +84,7 @@ canvas{
 
 .info-wrap{
     position:absolute;
-    top:72%;
-    left:50%;
+    top:72%;left:50%;
     transform:translateX(-50%);
     display:flex;
     gap:22px;
@@ -136,7 +121,9 @@ canvas{
 <div class="box">
     <canvas id="pinkboard"></canvas>
 
-    <img src="love.jpg" class="love-img">
+    <!-- ❤️ AVATAR -->
+    <img src="love.jpg" class="love-img" id="loveAvatar">
+
     <div class="name">Bích Diệu</div>
 
     <div class="info-wrap">
@@ -164,9 +151,13 @@ function fixIOSHeight(){
 }
 fixIOSHeight();window.addEventListener('resize',fixIOSHeight);
 
-/* 💍 START DATE (13/07/2025) */
-const startDate = new Date(2025,6,11,0,0,0);
+/* 💍 START DATE: 13/06/2025 */
+const startDate = new Date(2025,5,13,0,0,0);
 const counter = document.getElementById("counter");
+
+/* ❤️ AVATAR */
+const avatar = document.getElementById("loveAvatar");
+const defaultAvatar = "love.jpg";
 
 /* 🎵 AUDIO */
 const music = document.getElementById("bg-music");
@@ -184,11 +175,7 @@ function connectMusic(m){
     src.connect(analyser);
     analyser.connect(audioCtx.destination);
 }
-
-connectMusic(music);
-connectMusic(music100);
-connectMusic(music365);
-connectMusic(music1000);
+[ music, music100, music365, music1000 ].forEach(connectMusic);
 
 let currentMusic = music;
 let isPlaying = false;
@@ -211,13 +198,16 @@ function updateCounter(){
         ${now.getHours()} giờ ${now.getMinutes()} phút ${now.getSeconds()} giây 💖
     `;
 
+    /* reset */
+    avatar.src = defaultAvatar;
+    document.body.classList.remove("celebrate-100","celebrate-365","celebrate-1000");
+
     if(days>0){
         if(days%1000===0) activateAnniversary(1000);
         else if(days%365===0) activateAnniversary(365);
         else if(days%100===0) activateAnniversary(100);
     }
 }
-
 setInterval(updateCounter,1000);
 updateCounter();
 
@@ -225,11 +215,13 @@ updateCounter();
 function activateAnniversary(type){
     document.body.classList.add("celebrate-"+type);
 
-    currentMusic.pause();
+    /* đổi avatar */
+    if(type===1000) avatar.src="love-1000.jpg";
+    else if(type===365) avatar.src="love-365.jpg";
+    else avatar.src="love-100.jpg";
 
-    if(type===1000) currentMusic=music1000;
-    else if(type===365) currentMusic=music365;
-    else currentMusic=music100;
+    currentMusic.pause();
+    currentMusic = type===1000 ? music1000 : type===365 ? music365 : music100;
 
     if(audioCtx.state==="suspended") audioCtx.resume();
     currentMusic.play();
@@ -384,6 +376,7 @@ requestAnimationFrame(beatExplode);
 
 </body>
 </html>
+
 
 
 
