@@ -207,14 +207,10 @@ function updateCounter(){
     const dayFloor = Math.floor(elapsedDays);
 
 // 🎉 hiệu ứng bắt đầu từ mốc - 1 ngày
-    if(dayFloor === 999){
-        activateAnniversary(1000);
-    }
-    else if(dayFloor === 364){
-        activateAnniversary(365);
-    }
-    else if(dayFloor === 99){
-        activateAnniversary(100);
+    if(days>0){
+        if(days%1000===0) activateAnniversary(1000);
+        else if(days%365===0) activateAnniversary(365);
+        else if(days%100===0) activateAnniversary(100);
     }
 }
 setInterval(updateCounter,1000);
@@ -385,6 +381,7 @@ requestAnimationFrame(beatExplode);
 
 </body>
 </html>
+
 
 
 
