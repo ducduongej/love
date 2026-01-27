@@ -8,16 +8,21 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bích Diệu 💖">
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff5ca8">
-<link rel="icon" href="favicon.png">
+<link rel="icon" type="image/png" href="favicon.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
 
 <style>
-html,body{margin:0;padding:0;width:100%;height:100%;background:black;overflow:hidden;}
+html,body{
+    margin:0;padding:0;width:100%;height:100%;
+    background:black;overflow:hidden;
+}
 
+/* 🌌 Background mặc định */
 body::before{
     content:"";
     position:fixed;
@@ -27,14 +32,30 @@ body::before{
         url("background.jpg") center/cover no-repeat;
     z-index:0;
 }
-body.celebrate-100::before{background:url("bg-100.jpg") center/cover no-repeat;}
-body.celebrate-365::before{background:url("bg-365.jpg") center/cover no-repeat;}
-body.celebrate-1000::before{background:url("bg-1000.jpg") center/cover no-repeat;}
+
+/* 🌌 Background kỷ niệm */
+body.celebrate-100::before{
+    background:
+        linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.8)),
+        url("bg-100.jpg") center/cover no-repeat;
+}
+body.celebrate-365::before{
+    background:
+        linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.75)),
+        url("bg-365.jpg") center/cover no-repeat;
+}
+body.celebrate-1000::before{
+    background:
+        linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.7)),
+        url("bg-1000.jpg") center/cover no-repeat;
+}
 
 .box{
     position:relative;
     width:100vw;
-    height:100vh;
+    height:calc(var(--vh,1vh)*100);
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
 }
 
 canvas{position:absolute;inset:0;z-index:1;}
@@ -47,7 +68,7 @@ canvas{position:absolute;inset:0;z-index:1;}
     left:50%;top:38%;
     transform:translate(-50%,-50%);
     z-index:5;
-    box-shadow:0 0 35px #ff4da6;
+    box-shadow:0 0 35px #ff4da6,0 0 70px #ff1a8c;
     animation:heartbeat 1.3s infinite;
 }
 
@@ -61,28 +82,36 @@ canvas{position:absolute;inset:0;z-index:1;}
     z-index:6;
 }
 
-.info{
+.info-wrap{
     position:absolute;
-    top:73%;left:50%;
+    top:72%;left:50%;
     transform:translateX(-50%);
-    text-align:center;
-    color:#ffd1e8;
+    display:flex;
+    gap:22px;
     z-index:6;
     font-family:'Playfair Display',serif;
+    font-size:15px;
+    color:#ffd1e8;
+    text-align:center;
 }
 
 .music-btn{
     position:fixed;
-    bottom:20px;right:20px;
-    background:#ff5ca8;
-    border:none;border-radius:50%;
-    padding:12px;font-size:20px;
+    bottom:calc(20px + env(safe-area-inset-bottom));
+    right:20px;
     z-index:10;
+    background:rgba(255,92,164,.85);
+    border:none;
+    border-radius:50%;
+    padding:12px;
+    font-size:20px;
+    box-shadow:0 0 20px #ff4da6;
 }
 
 @keyframes heartbeat{
     0%{transform:translate(-50%,-50%) scale(1);}
-    50%{transform:translate(-50%,-50%) scale(1.15);}
+    30%{transform:translate(-50%,-50%) scale(.85);}
+    60%{transform:translate(-50%,-50%) scale(1.15);}
     100%{transform:translate(-50%,-50%) scale(1);}
 }
 </style>
@@ -92,61 +121,99 @@ canvas{position:absolute;inset:0;z-index:1;}
 <div class="box">
     <canvas id="pinkboard"></canvas>
 
-    <img src="love.jpg" id="avatar" class="love-img">
+    <!-- ❤️ AVATAR -->
+    <img src="love.jpg" class="love-img" id="loveAvatar">
+
     <div class="name">Bích Diệu</div>
 
-    <div class="info" id="counter"></div>
+    <div class="info-wrap">
+        <div>
+            I Love You 💖<br>
+            Every beat of my heart<br>
+            is for you 💕
+        </div>
+        <div id="counter"></div>
+    </div>
 
     <button class="music-btn" onclick="toggleMusic()">🎵</button>
 </div>
 
-<!-- 🎵 AUDIO THUẦN (IOS SAFE) -->
-<audio id="music-default" src="music.mp3" loop></audio>
-<audio id="music-100" src="music-100.mp3" loop></audio>
-<audio id="music-365" src="music-365.mp3" loop></audio>
-<audio id="music-1000" src="music-1000.mp3" loop></audio>
+<!-- 🎵 ONLY ONE MUSIC (iOS SAFE) -->
+<audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-/* 🔍 Detect iOS */
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-    || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+/* 📱 Fix iOS vh */
+function fixIOSHeight(){
+    document.documentElement.style.setProperty('--vh',window.innerHeight*0.01+'px');
+}
+fixIOSHeight();window.addEventListener('resize',fixIOSHeight);
 
 /* 💍 START DATE */
-const startDate = new Date(2025,6,12);
+const startDate = new Date(2025,6,12,0,0,0);
 const counter = document.getElementById("counter");
 
 /* ❤️ AVATAR */
-const avatar = document.getElementById("avatar");
+const avatar = document.getElementById("loveAvatar");
 const defaultAvatar = "love.jpg";
 
-/* 🎵 MUSIC */
-const musics = {
-    default: document.getElementById("music-default"),
-    100: document.getElementById("music-100"),
-    365: document.getElementById("music-365"),
-    1000: document.getElementById("music-1000")
-};
-let currentMusic = musics.default;
+/* 🎵 AUDIO */
+const music = document.getElementById("bg-music");
 let isPlaying = false;
 
-/* 💓 iOS FAKE BEAT */
-let fakeBeat = null;
-function startIOSBeat(){
-    if(fakeBeat) return;
-    fakeBeat = setInterval(()=>{
-        explode(40);
-    }, 600); // ~100 BPM
-}
-function stopIOSBeat(){
-    clearInterval(fakeBeat);
-    fakeBeat = null;
-}
+const AudioCtx = window.AudioContext||window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 64;
 
-/* 🎆 PARTICLE NỔ (DÙNG CHUNG) */
-function explode(n){
-    for(let i=0;i<n;i++){
+const source = audioCtx.createMediaElementSource(music);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+/* 💍 COUNTER + ANNIVERSARY */
+function updateCounter(){
+    const now = new Date();
+
+    let y = now.getFullYear()-startDate.getFullYear();
+    let m = now.getMonth()-startDate.getMonth();
+    let d = now.getDate()-startDate.getDate();
+    if(d<0){m--;d+=new Date(now.getFullYear(),now.getMonth(),0).getDate();}
+    if(m<0){y--;m+=12;}
+
+    const days = Math.floor((now-startDate)/(1000*60*60*24)+1);
+
+    counter.innerHTML = `
+        Bên nhau 💍<br>
+        ${y>0?y+" năm ":""}${m>0||y>0?m+" tháng ":""}${d} ngày<br>
+        ${now.getHours()} giờ ${now.getMinutes()} phút ${now.getSeconds()} giây 💖
+    `;
+
+    /* reset */
+    avatar.src = defaultAvatar;
+    document.body.classList.remove("celebrate-100","celebrate-365","celebrate-1000");
+
+    if(days>0){
+        if(days%1000===0) activateAnniversary(1000);
+        else if(days%365===0) activateAnniversary(365);
+        else if(days%100===0) activateAnniversary(100);
+    }
+}
+setInterval(updateCounter,1000);
+updateCounter();
+
+/* 🎉 ANNIVERSARY (NO MUSIC CHANGE) */
+function activateAnniversary(type){
+    document.body.classList.add("celebrate-"+type);
+
+    if(type===1000) avatar.src="love-1000.jpg";
+    else if(type===365) avatar.src="love-365.jpg";
+    else avatar.src="love-100.jpg";
+
+    /* 🎆 nổ tim lớn */
+    for(let i=0;i<300;i++){
         let a=Math.random()*Math.PI*2;
-        let s=80+Math.random()*80;
+        let s=150+Math.random()*200;
         particles.add(
             canvas.width/2,
             canvas.height/2-80,
@@ -156,49 +223,17 @@ function explode(n){
     }
 }
 
-/* 🎵 TOGGLE MUSIC */
+/* 🎵 BUTTON */
 function toggleMusic(){
     if(!isPlaying){
-        currentMusic.play();
-        if(isIOS) startIOSBeat();
+        if(audioCtx.state==="suspended") audioCtx.resume();
+        music.play();
+        beatExplode();
     }else{
-        currentMusic.pause();
-        if(isIOS) stopIOSBeat();
+        music.pause();
     }
     isPlaying=!isPlaying;
 }
-
-/* 🎉 ANNIVERSARY */
-function activate(type){
-    document.body.className = "celebrate-"+type;
-    avatar.src = type===1000?"love-1000.jpg":type===365?"love-365.jpg":"love-100.jpg";
-
-    currentMusic.pause();
-    currentMusic = musics[type];
-    currentMusic.play();
-
-    if(isIOS) startIOSBeat();
-    explode(200);
-}
-
-/* ⏱ COUNTER */
-function update(){
-    const now=new Date();
-    const days=Math.floor((now-startDate)/(86400000)+1);
-
-    counter.innerHTML=`Bên nhau 💍<br>${days} ngày<br>${now.getHours()} giờ ${now.getMinutes()} phút ${now.getSeconds()} giây`;
-
-    avatar.src = defaultAvatar;
-    document.body.className="";
-
-    if(days>0){
-        if(days%1000===0) activate(1000);
-        else if(days%365===0) activate(365);
-        else if(days%100===0) activate(100);
-    }
-}
-setInterval(update,1000);
-update();
 </script>
 
 <script>
@@ -330,6 +365,7 @@ requestAnimationFrame(beatExplode);
 
 </body>
 </html>
+
 
 
 
