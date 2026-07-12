@@ -234,7 +234,7 @@ function updateCounter(){
             targetAvatar = "love-1000.jpg";
             targetClass = "celebrate-1000";
             targetMusic = "music-1000.mp3";
-        } else if (days % 365 === 0) {
+        } else if (days % 366 === 0) {
             targetAvatar = "love-365.jpg";
             targetClass = "celebrate-365";
             targetVideoDisplay = "block";
@@ -456,7 +456,7 @@ function refillAndShufflePool() {
 }
 
 function createFloatingText() {
-    if (document.hidden || !isCelebration365) return;
+    if (document.hidden) return;
 
     // Nếu hộp chữ đã bị rút hết, tiến hành nạp mới và xáo lại vòng tiếp theo
     if (messagePool.length === 0) {
