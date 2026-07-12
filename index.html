@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#ff5ca8">
 <link rel="icon" type="image/png" href="favicon.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&family=Pattaya&display=swap" rel="stylesheet">
 
 <style>
 html,body{
@@ -109,6 +109,31 @@ canvas{position:absolute;inset:0;z-index:1;}
     cursor: pointer;
 }
 
+/* 🎐 CSS CHO CHỮ BAY */
+.floating-text {
+    position: fixed;
+    left: 100vw; /* Xuất phát từ ngoài cùng bên phải màn hình */
+    white-space: nowrap;
+    color: rgba(255, 200, 220, 0.65); /* Màu hồng nhạt, hơi trong suốt cho nghệ thuật */
+    font-family: 'Pattaya', sans-serif; /* Phông chữ viết tay mềm mại */
+    font-size: 20px;
+    text-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+    pointer-events: none; /* Tránh cản trở việc click vào tim */
+    z-index: 2; /* Nằm trên hình nền, dưới avatar */
+    animation: flyAcross linear forwards;
+}
+
+@keyframes flyAcross {
+    0% {
+        left: 100vw;
+        transform: translateX(0);
+    }
+    100% {
+        left: 0vw;
+        transform: translateX(-100%); /* Bay hoàn toàn qua lề trái */
+    }
+}
+
 @keyframes heartbeat{
     0%{transform:translate(-50%,-50%) scale(1);}
     30%{transform:translate(-50%,-50%) scale(.85);}
@@ -142,7 +167,7 @@ canvas{position:absolute;inset:0;z-index:1;}
     <button class="music-btn" onclick="toggleMusic()">🎵</button>
 </div>
 
-<!-- 🎵 AUDIO THẺ KHÔNG ĐỂ SẴN SRC (SẼ ĐƯỢC JS ĐIỀU KHIỂN TỰ ĐỘNG) -->
+<!-- 🎵 AUDIO THẺ TỰ ĐỘNG ĐỔI THEO NGÀY -->
 <audio id="bg-music" loop crossorigin="anonymous"></audio>
 
 <script>
@@ -165,7 +190,7 @@ const videoBg = document.getElementById("videoBg365");
 const music = document.getElementById("bg-music");
 let isPlaying = false;
 let lastBeat = 0;
-let currentMusicSrc = "music.mp3"; // Bài nhạc mặc định ban đầu
+let currentMusicSrc = "music.mp3"; 
 
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioCtx();
@@ -194,44 +219,41 @@ function updateCounter(){
     counter.innerHTML = `
         Bên nhau 💍<br>
         ${y>0?y+" năm ":""}${m>0||y>0?m+" tháng ":""}${d} ngày<br>
-        ${now.getHours()} giờ ${now.getMinutes()} phút ${now.getSeconds()} giây 💖
+        ${now.getHours()} giờ ${now.getMinutes()} minutes ${now.getSeconds()} giây 💖
     `;
 
     /* 1. Reset trạng thái mặc định ban đầu */
     let targetAvatar = defaultAvatar;
     let targetClass = "";
     let targetVideoDisplay = "none";
-    let targetMusic = "music.mp3"; // Nhạc mặc định ngày thường
+    let targetMusic = "music.mp3"; 
 
     /* 2. Kiểm tra nếu rơi vào các ngày kỷ niệm */
     if (days > 0) {
         if (days % 1000 === 0) {
             targetAvatar = "love-1000.jpg";
             targetClass = "celebrate-1000";
-            targetMusic = "music-1000.mp3"; // Nhạc mốc 1000 ngày
+            targetMusic = "music-1000.mp3"; 
         } else if (days % 365 === 0) {
             targetAvatar = "love-365.jpg";
             targetClass = "celebrate-365";
             targetVideoDisplay = "block";
-            targetMusic = "music-365.mp3"; // Nhạc mốc 1 năm
+            targetMusic = "music-365.mp3"; 
         } else if (days % 100 === 0) {
             targetAvatar = "love-100.jpg";
             targetClass = "celebrate-100";
-            targetMusic = "music-100.mp3"; // Nhạc mốc 100 ngày
+            targetMusic = "music-100.mp3"; 
         }
     }
 
     /* 3. Cập nhật giao diện Hình ảnh / Video */
     if (avatar.getAttribute("src") !== targetAvatar) avatar.src = targetAvatar;
-    
-    // Quản lý class kỷ niệm của body
     document.body.className = targetClass;
 
-    // Quản lý trạng thái phát của video nền kỷ niệm 365 ngày
     if (targetVideoDisplay === "block") {
         if (videoBg.style.display !== "block") {
             videoBg.style.display = "block";
-            videoBg.play().catch(err => console.log("Chờ tương tác của người dùng để chạy video"));
+            videoBg.play().catch(err => console.log("Chờ tương tác để chạy video"));
         }
     } else {
         if (videoBg.style.display !== "none") {
@@ -243,39 +265,25 @@ function updateCounter(){
     /* 4. ĐIỀU KHIỂN ĐỔI NHẠC NỀN TỰ ĐỘNG */
     if (currentMusicSrc !== targetMusic) {
         currentMusicSrc = targetMusic;
-        
-        // Cập nhật đường dẫn bài hát mới vào thẻ audio
         music.src = targetMusic;
-        music.load(); // Nạp lại file nhạc mới
-        
-        // Nếu trang web đang ở trạng thái phát nhạc, tự động phát tiếp bài mới
+        music.load(); 
         if (isPlaying) {
             music.play().catch(err => console.log("Chờ tương tác để phát nhạc mới"));
         }
-        
-        // Kích hoạt nổ loạt tim lớn chào mừng ngày kỷ niệm khi nhạc chuyển giao
         if (targetClass !== "") {
             triggerAnniversaryExplosion();
         }
     }
 }
 
-// Hàm bổ trợ bắn tim lớn khi trúng mốc kỷ niệm
 function triggerAnniversaryExplosion() {
     for(let i=0;i<300;i++){
         let a=Math.random()*Math.PI*2;
         let s=150+Math.random()*200;
-        particles.add(
-            canvas.width/2,
-            canvas.height/2-80,
-            Math.cos(a)*s,
-            Math.sin(a)*s
-        );
+        particles.add(canvas.width/2, canvas.height/2-80, Math.cos(a)*s, Math.sin(a)*s);
     }
 }
 
-// Khởi tạo chạy bộ đếm
-// (Gán trực tiếp nhạc mặc định vào thẻ trước khi chạy setInterval)
 music.src = currentMusicSrc;
 setInterval(updateCounter, 1000);
 updateCounter();
@@ -295,7 +303,7 @@ function toggleMusic(){
 </script>
 
 <script>
-/* ❤️ HEART PARTICLE ENGINE (Hiệu ứng Canvas trái tim - Giữ nguyên gốc) */
+/* ❤️ HEART PARTICLE ENGINE (Hiệu ứng Canvas trái tim) */
 var settings={particles:{length:window.innerWidth<500?1200:2000,duration:2,velocity:100,effect:-1.3,size:13}};
 (function(){var b=0;var c=["ms","moz","webkit","o"];
 for(var a=0;a<c.length&&!window.requestAnimationFrame;++a){
@@ -423,6 +431,58 @@ function beatExplode(){
     }
     requestAnimationFrame(beatExplode);
 }
+</script>
+
+<script>
+/* 🎐 LOGIC SINH CHỮ BAY NGẪU NHIÊN */
+const loveMessages = [
+    "Bích Diệu ơi 💕", "Yêu Em rất nhiều 💖", "Mãi bên nhau nhé 💍", 
+    "My Princess 👑", "Yêu Diệu nhất đời 🥰", "Always with you 👩‍❤️‍👨",
+    "Bé iu của anh ❤️", "Thương Diệu lắm 💋", "Yêu em vô điều kiện"
+];
+
+function createFloatingText() {
+    // Chỉ tạo chữ bay khi tab đang mở (tránh ngốn RAM khi ẩn trình duyệt)
+    if (document.hidden) return;
+
+    const textNode = document.createElement("div");
+    textNode.className = "floating-text";
+    
+    // Lấy ngẫu nhiên một câu trong mảng
+    textNode.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+    
+    // Tọa độ cao ngẫu nhiên (tránh phần Avatar ở giữa tầm 30%-50% để không đè chữ)
+    let randomTop = Math.random() * 80 + 5; // Từ 5% đến 85% chiều cao màn hình
+    while(randomTop > 28 && randomTop < 55) { 
+        randomTop = Math.random() * 80 + 5; // Lấy lại nếu đè vào khu ảnh đại diện
+    }
+    textNode.style.top = randomTop + "vh";
+    
+    // Tốc độ bay ngẫu nhiên chậm chậm (từ 15 giây đến 25 giây để lướt qua hết màn hình)
+    const duration = Math.random() * 10 + 15;
+    textNode.style.animationDuration = duration + "s";
+    
+    // Kích thước chữ ngẫu nhiên một chút cho có chiều sâu (xa gần)
+    textNode.style.fontSize = (Math.random() * 6 + 18) + "px";
+    textNode.style.opacity = (Math.random() * 0.3 + 0.5); // Độ đậm nhạt 0.5 - 0.8
+
+    document.body.appendChild(textNode);
+    
+    // Tự động xóa thẻ div chữ sau khi đã bay hết màn hình để sạch bộ nhớ
+    setTimeout(() => {
+        textNode.remove();
+    }, duration * 1000);
+}
+
+// Cứ sau mỗi 3 đến 5 giây sẽ xuất hiện thêm một dòng chữ mới bay ra
+function startFloatingLoop() {
+    createFloatingText();
+    const nextSpawnTime = Math.random() * 2000 + 3000; // Ngẫu nhiên 3000ms - 5000ms
+    setTimeout(startFloatingLoop, nextSpawnTime);
+}
+
+// Bắt đầu kích hoạt vòng lặp chữ bay
+startFloatingLoop();
 </script>
 
 </body>
