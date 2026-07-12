@@ -441,34 +441,53 @@ const loveMessages = [
     "Cục cưng của anh ❤️", "D ❤️ D", "Since 13.07.2025"
 ];
 
+// Khởi tạo một "hộp chứa" rỗng để phục vụ việc bốc thăm lần lượt
+let messagePool = [];
+
+function refillAndShufflePool() {
+    // Nạp lại đầy đủ các câu chữ từ mảng gốc vào hộp
+    messagePool = [...loveMessages];
+    
+    // Thuật toán Fisher-Yates để xáo trộn ngẫu nhiên vị trí các câu trong hộp
+    for (let i = messagePool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [messagePool[i], messagePool[j]] = [messagePool[j], messagePool[i]];
+    }
+}
+
 function createFloatingText() {
-    // Chỉ tạo chữ bay khi tab đang mở (tránh ngốn RAM khi ẩn trình duyệt)
     if (document.hidden) return;
+
+    // Nếu hộp chữ đã bị rút hết, tiến hành nạp mới và xáo lại vòng tiếp theo
+    if (messagePool.length === 0) {
+        refillAndShufflePool();
+    }
+
+    // Rút (xóa) câu đầu tiên ra khỏi hộp để cho bay lên màn hình
+    const currentMessage = messagePool.shift();
 
     const textNode = document.createElement("div");
     textNode.className = "floating-text";
+    textNode.innerText = currentMessage;
     
-    // Lấy ngẫu nhiên một câu trong mảng
-    textNode.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-    
-    // Tọa độ cao ngẫu nhiên (tránh phần Avatar ở giữa tầm 30%-50% để không đè chữ)
-    let randomTop = Math.random() * 80 + 5; // Từ 5% đến 85% chiều cao màn hình
+    // Tọa độ cao ngẫu nhiên (tránh phần Avatar ở giữa tầm 30%-55% để không đè ảnh)
+    let randomTop = Math.random() * 80 + 5; 
     while(randomTop > 28 && randomTop < 55) { 
-        randomTop = Math.random() * 80 + 5; // Lấy lại nếu đè vào khu ảnh đại diện
+        randomTop = Math.random() * 80 + 5; 
     }
     textNode.style.top = randomTop + "vh";
     
-    // Tốc độ bay ngẫu nhiên chậm chậm (từ 15 giây đến 25 giây để lướt qua hết màn hình)
+    // Tốc độ bay ngẫu nhiên chậm chậm (từ 15 giây đến 25 giây)
     const duration = Math.random() * 10 + 15;
     textNode.style.animationDuration = duration + "s";
     
-    // Kích thước chữ ngẫu nhiên một chút cho có chiều sâu (xa gần)
+    // Kích thước chữ ngẫu nhiên nhẹ cho nghệ thuật
     textNode.style.fontSize = (Math.random() * 6 + 18) + "px";
-    textNode.style.opacity = (Math.random() * 0.3 + 0.5); // Độ đậm nhạt 0.5 - 0.8
+    textNode.style.opacity = (Math.random() * 0.3 + 0.5); 
 
     document.body.appendChild(textNode);
     
-    // Tự động xóa thẻ div chữ sau khi đã bay hết màn hình để sạch bộ nhớ
+    // Tự động xóa thẻ div chữ sau khi đã bay hết màn hình
     setTimeout(() => {
         textNode.remove();
     }, duration * 1000);
@@ -481,7 +500,7 @@ function startFloatingLoop() {
     setTimeout(startFloatingLoop, nextSpawnTime);
 }
 
-// Bắt đầu kích hoạt vòng lặp chữ bay
+// Kích hoạt chạy vòng lặp chữ bay đều lượt
 startFloatingLoop();
 </script>
 
